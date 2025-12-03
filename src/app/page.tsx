@@ -5,6 +5,7 @@ import Navbar from '@/app/components/Navbar'
 import ProductCard from '@/app/components/ProductCard'
 import CartSidebar from '@/app/components/CartSidebar'
 import { SAMPLE_PRODUCTS, CATEGORIES } from '@/app/data/products'
+import { useRouter } from 'next/navigation'
 
 export default function Home() {
   // 1. 상태 관리 (장바구니, 검색어, 카테고리 등)
@@ -12,6 +13,7 @@ export default function Home() {
   const [isCartOpen, setIsCartOpen] = useState(false)
   const [activeCategory, setActiveCategory] = useState('All')
   const [searchQuery, setSearchQuery] = useState('')
+  const router = useRouter()
 
   // 2. 기능 로직 (장바구니 담기, 수량 조절, 삭제)
   const addToCart = (product: any) => {

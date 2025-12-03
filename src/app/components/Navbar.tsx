@@ -1,10 +1,9 @@
-'use client';
+'use client'
 
-// Heart 아이콘 추가
-import { ShoppingCart, Search, ShoppingBag, Heart } from 'lucide-react';
-import { CATEGORIES } from '../data/products';
-// 찜 기능 훅 가져오기 (경로가 맞는지 확인해주세요)
-import { useWishlist } from '../context/WishlistContext';
+import { ShoppingCart, Search, Heart, ShoppingBag } from 'lucide-react'
+import { useAuth } from '@/context/AuthContext'
+import { useRouter } from 'next/navigation'
+import { useWishlist } from '@/context/WishlistContext'
 
 export default function Navbar({
   activeCategory,
@@ -14,14 +13,14 @@ export default function Navbar({
   cartCount,
   setIsCartOpen,
 }: any) {
-  // 찜 목록 데이터와 사이드바 열기 함수 가져오기
-  const { wishlist, openWishlist } = useWishlist();
+  const { isLoggedIn, user, logout } = useAuth()
+  const router = useRouter()
+  const { wishlist, openWishlist } = useWishlist()
 
   return (
     <nav className="sticky top-0 z-40 w-full bg-white/80 backdrop-blur-md border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* 로고 */}
           <div
             className="flex items-center gap-2 cursor-pointer"
             onClick={() => window.location.reload()}
@@ -32,26 +31,11 @@ export default function Navbar({
             </span>
           </div>
 
-          {/* 데스크탑 카테고리 메뉴 */}
           <div className="hidden md:flex items-center space-x-8">
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`${
-                  activeCategory === cat
-                    ? 'text-indigo-600 font-bold'
-                    : 'text-gray-500 hover:text-gray-900'
-                } transition-colors`}
-              >
-                {cat}
-              </button>
-            ))}
+            {/* 카테고리 버튼들 */}
           </div>
 
-          {/* 검색 및 아이콘들 (찜, 장바구니) */}
           <div className="flex items-center gap-4">
-            {/* 검색창 */}
             <div className="relative hidden sm:block">
               <input
                 type="text"
@@ -63,22 +47,20 @@ export default function Navbar({
               <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
             </div>
 
-            {/* === 추가된 부분: 찜(하트) 버튼 === */}
             <button
               className="relative p-2 hover:bg-gray-100 rounded-full transition-colors"
-              onClick={openWishlist}
+              onClick={() =>
+                isLoggedIn ? openWishlist() : router.push('/login')
+              }
             >
               <Heart className="h-6 w-6 text-gray-700" />
-              {/* 찜한 개수가 0보다 클 때만 빨간 뱃지 표시 */}
               {wishlist.length > 0 && (
                 <span className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center animate-bounce">
                   {wishlist.length}
                 </span>
               )}
             </button>
-            {/* ================================= */}
 
-            {/* 장바구니 버튼 (기존 코드) */}
             <button
               className="relative p-2 hover:bg-gray-100 rounded-full transition-colors"
               onClick={() => setIsCartOpen(true)}
@@ -90,9 +72,28 @@ export default function Navbar({
                 </span>
               )}
             </button>
+
+            {isLoggedIn ? (
+              <div className="flex items-center gap-2">
+                <span className="text-gray-700 font-medium">{user?.name}</span>
+                <button
+                  onClick={logout}
+                  className="bg-red-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-600 transition"
+                >
+                  로그아웃
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => router.push('/login')}
+                className="bg-indigo-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-indigo-700 transition"
+              >
+                로그인
+              </button>
+            )}
           </div>
         </div>
       </div>
     </nav>
-  );
+  )
 }

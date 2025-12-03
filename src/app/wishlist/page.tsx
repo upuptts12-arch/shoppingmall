@@ -1,20 +1,20 @@
-'use client';
+'use client'
 
 // 경로 수정됨: app/wishlist/ 폴더 기준, 한 단계 위(../)의 context와 components를 찾습니다.
-import { useWishlist } from '../context/WishlistContext';
-import ProductCard from '../components/ProductCard';
-import { Heart } from 'lucide-react';
-import Link from 'next/link';
+import { useWishlist } from '../../context/WishlistContext'
+import ProductCard from '../components/ProductCard'
+import { Heart } from 'lucide-react'
+import Link from 'next/link'
 
 export default function WishlistPage() {
-  const { wishlist } = useWishlist();
+  const { wishlist } = useWishlist()
 
   // 장바구니 담기 핸들러 (ProductCard에 넘겨줄 함수)
   const handleAddToCart = (product: any) => {
     // 실제 장바구니 로직이 있다면 여기에 연결하거나, Context에서 가져와서 쓰시면 됩니다.
-    console.log('장바구니 담기:', product);
-    alert(`${product.name}을(를) 장바구니에 담았습니다!`);
-  };
+    console.log('장바구니 담기:', product)
+    alert(`${product.name}을(를) 장바구니에 담았습니다!`)
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -54,5 +54,5 @@ export default function WishlistPage() {
         </div>
       )}
     </div>
-  );
+  )
 }

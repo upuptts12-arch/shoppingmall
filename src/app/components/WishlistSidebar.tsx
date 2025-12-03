@@ -1,32 +1,32 @@
-'use client';
+'use client'
 
-import { useWishlist } from '../context/WishlistContext';
-import { X, Trash2, ShoppingCart } from 'lucide-react';
-import { useEffect } from 'react';
+import { useWishlist } from '../../context/WishlistContext'
+import { X, Trash2, ShoppingCart } from 'lucide-react'
+import { useEffect } from 'react'
 
 // [핵심!] 반드시 'export default'가 있어야 layout.tsx에서 불러올 수 있습니다.
 export default function WishlistSidebar() {
   const { wishlist, isWishlistOpen, closeWishlist, removeFromWishlist } =
-    useWishlist();
+    useWishlist()
 
   // 사이드바 열리면 뒷배경 스크롤 막기
   useEffect(() => {
     if (isWishlistOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden'
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = 'unset'
     }
-  }, [isWishlistOpen]);
+  }, [isWishlistOpen])
 
   // 가격 포맷
   const formatPrice = (price: number | string) =>
     new Intl.NumberFormat('ko-KR', {
       style: 'currency',
       currency: 'KRW',
-    }).format(Number(price));
+    }).format(Number(price))
 
   // 닫혀있으면 아예 안 보여줌
-  if (!isWishlistOpen) return null;
+  if (!isWishlistOpen) return null
 
   return (
     <div className="fixed inset-0 z-[999] flex justify-end">
@@ -116,5 +116,5 @@ export default function WishlistSidebar() {
         </div>
       </div>
     </div>
-  );
+  )
 }
