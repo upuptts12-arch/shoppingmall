@@ -2,7 +2,7 @@
 
 import { ShoppingCart, Star, Heart } from 'lucide-react'
 // 방금 만든 Context 훅을 가져옵니다. (경로가 ../context/.. 가 맞는지 확인해주세요)
-import { useWishlist } from '../../context/WishlistContext'
+import { useWishlist } from '../context/WishlistContext'
 
 export default function ProductCard({ product, addToCart }: any) {
   // 1. 찜 기능 훅 사용

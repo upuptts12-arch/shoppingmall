@@ -1,6 +1,6 @@
 'use client'
 
-import { useWishlist } from '../../context/WishlistContext'
+import { useWishlist } from '../context/WishlistContext'
 import { X, Trash2, ShoppingCart } from 'lucide-react'
 import { useEffect } from 'react'
 

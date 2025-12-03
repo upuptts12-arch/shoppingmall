@@ -1,7 +1,7 @@
 'use client'
 
 // 경로 수정됨: app/wishlist/ 폴더 기준, 한 단계 위(../)의 context와 components를 찾습니다.
-import { useWishlist } from '../../context/WishlistContext'
+import { useWishlist } from '../context/WishlistContext'
 import ProductCard from '../components/ProductCard'
 import { Heart } from 'lucide-react'
 import Link from 'next/link'

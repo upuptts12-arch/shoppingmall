@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 
-import { WishlistProvider } from '../context/WishlistContext'
-import { AuthProvider } from '../context/AuthContext' // 추가
+import { WishlistProvider } from './context/WishlistContext'
+import { AuthProvider } from './context/AuthContext' // 추가
 import WishlistSidebar from './components/WishlistSidebar'
 
 const geistSans = Geist({

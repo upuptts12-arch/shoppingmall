@@ -1,9 +1,9 @@
 'use client'
 
 import { ShoppingCart, Search, Heart, ShoppingBag } from 'lucide-react'
-import { useAuth } from '@/context/AuthContext'
+import { useAuth } from '@/app/context/AuthContext'
 import { useRouter } from 'next/navigation'
-import { useWishlist } from '@/context/WishlistContext'
+import { useWishlist } from '@/app/context/WishlistContext'
 
 export default function Navbar({
   activeCategory,
