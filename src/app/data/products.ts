@@ -51,7 +51,7 @@ export const SAMPLE_PRODUCTS = [
     price: 48000,
     category: 'Bottom',
     image:
-      'https://images.unsplash.com/photo-1517445312582-552ac69a3d3b?auto=format&fit=crop&q=80&w=500',
+      'https://search.pstatic.net/common/?src=http%3A%2F%2Fshop1.phinf.naver.net%2F20220523_82%2F1653281855421tuFjk_JPEG%2F54417638859276994_1280782533.jpg&type=a340',
     rating: 4.6,
   },
 ]

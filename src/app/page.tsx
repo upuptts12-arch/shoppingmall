@@ -1,5 +1,6 @@
 'use client'
 
+import Link from "next/link";
 import React, { useState } from 'react'
 import Navbar from '@/app/components/Navbar'
 import ProductCard from '@/app/components/ProductCard'
@@ -105,16 +106,17 @@ export default function Home() {
           </div>
         </div>
 
-        {/* 상품 리스트 */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          {filteredProducts.map((product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              addToCart={addToCart}
-            />
-          ))}
-        </div>
+ {/* 상품 리스트 */}
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+  {filteredProducts.map((product) => (
+    <Link href={`/product/${product.id}`} key={product.id}>
+      <ProductCard
+        product={product}
+        addToCart={addToCart}
+      />
+    </Link>
+  ))}
+</div>
 
         {filteredProducts.length === 0 && (
           <div className="text-center py-20">
