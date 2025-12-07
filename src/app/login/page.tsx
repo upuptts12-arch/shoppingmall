@@ -1,117 +1,76 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { useAuth } from '@/app/context/AuthContext'
 
-export default function AuthPage() {
+export default function LoginPage() {
+  const router = useRouter()
   const { login } = useAuth()
-  const [isLogin, setIsLogin] = useState(true)
-  const [email, setEmail] = useState('')
+
+  const [idOrEmail, setIdOrEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [name, setName] = useState('')
   const [message, setMessage] = useState('')
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
-    const res = await fetch('/api/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-    })
-    const data = await res.json()
-    if (!res.ok) return setMessage(data.error)
+  const handleLogin = async () => {
+    try {
+      const res = await fetch('http://localhost:5000/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ idOrEmail, password }),
+      })
 
-    login(data.user)
-    setMessage('로그인 성공!')
-  }
-
-  const handleSignup = async (e: React.FormEvent) => {
-    e.preventDefault()
-    const res = await fetch('/api/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, password }),
-    })
-    const data = await res.json()
-    if (!res.ok) return setMessage(data.error)
-
-    setMessage('회원가입 성공! 로그인해주세요')
-    setIsLogin(true)
+      const data = await res.json()
+      if (res.ok) {
+        localStorage.setItem('token', data.token)
+        localStorage.setItem('name', data.name)
+        login(data.name)
+        router.push('/')
+      } else {
+        setMessage(data.message || '로그인 실패')
+      }
+    } catch (err) {
+      setMessage('서버 오류')
+    }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-100 to-pink-100">
-      <div className="bg-white p-10 rounded-3xl shadow-xl w-full max-w-md">
-        <h1 className="text-3xl font-bold text-center mb-6">
-          {isLogin ? '로그인' : '회원가입'}
-        </h1>
+    <div className="max-w-md mx-auto mt-24 p-8 border border-gray-300 rounded-lg shadow-sm">
+      <h2 className="text-2xl font-bold mb-6 text-center">로그인</h2>
 
-        {isLogin ? (
-          <form onSubmit={handleLogin} className="flex flex-col gap-4">
-            <input
-              type="email"
-              placeholder="이메일"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400"
-            />
-            <input
-              type="password"
-              placeholder="비밀번호"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400"
-            />
-            <button className="bg-indigo-500 text-white py-2 rounded-xl font-semibold hover:bg-indigo-600 transition">
-              로그인
-            </button>
-          </form>
-        ) : (
-          <form onSubmit={handleSignup} className="flex flex-col gap-4">
-            <input
-              type="text"
-              placeholder="이름"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-              className="px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400"
-            />
-            <input
-              type="email"
-              placeholder="이메일"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400"
-            />
-            <input
-              type="password"
-              placeholder="비밀번호"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400"
-            />
-            <button className="bg-pink-500 text-white py-2 rounded-xl font-semibold hover:bg-pink-600 transition">
-              회원가입
-            </button>
-          </form>
-        )}
+      <input
+        type="text"
+        placeholder="아이디 또는 이메일"
+        value={idOrEmail}
+        onChange={(e) => setIdOrEmail(e.target.value)}
+        className="w-full border border-gray-400 p-3 rounded mb-4"
+      />
 
-        {message && <p className="text-center text-red-500 mt-4">{message}</p>}
+      <input
+        type="password"
+        placeholder="비밀번호"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        className="w-full border border-gray-400 p-3 rounded mb-6"
+      />
 
-        <button
-          onClick={() => {
-            setIsLogin(!isLogin)
-            setMessage('')
-          }}
-          className="mt-6 text-sm text-indigo-500 hover:underline"
-        >
-          {isLogin ? '회원가입 하러가기' : '로그인 하러가기'}
-        </button>
-      </div>
+      <button
+        onClick={handleLogin}
+        className="w-full bg-black text-white p-3 rounded mb-4 hover:bg-gray-800"
+      >
+        로그인
+      </button>
+
+      <button
+        onClick={() => router.push('/register')}
+        className="w-full border border-gray-400 p-3 rounded hover:bg-gray-100"
+      >
+        회원가입
+      </button>
+
+      {message && (
+        <p className="text-red-500 mt-4 text-center text-sm">{message}</p>
+      )}
     </div>
   )
 }

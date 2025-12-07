@@ -1,8 +1,7 @@
 'use client'
 
-import Link from "next/link";
+import Link from 'next/link'
 import React, { useState } from 'react'
-import Navbar from '@/app/components/Navbar'
 import ProductCard from '@/app/components/ProductCard'
 import CartSidebar from '@/app/components/CartSidebar'
 import { SAMPLE_PRODUCTS, CATEGORIES } from '@/app/data/products'
@@ -53,16 +52,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-50 font-sans text-gray-800">
-      {/* 상단 네비게이션 바 */}
-      <Navbar
-        activeCategory={activeCategory}
-        setActiveCategory={setActiveCategory}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        cartCount={cart.reduce((acc, item) => acc + item.quantity, 0)}
-        setIsCartOpen={setIsCartOpen}
-      />
-
       {/* 메인 컨텐츠 */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* 프로모션 배너 */}
@@ -106,17 +95,14 @@ export default function Home() {
           </div>
         </div>
 
- {/* 상품 리스트 */}
-<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-  {filteredProducts.map((product) => (
-    <Link href={`/product/${product.id}`} key={product.id}>
-      <ProductCard
-        product={product}
-        addToCart={addToCart}
-      />
-    </Link>
-  ))}
-</div>
+        {/* 상품 리스트 */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {filteredProducts.map((product) => (
+            <Link href={`/product/${product.id}`} key={product.id}>
+              <ProductCard product={product} addToCart={addToCart} />
+            </Link>
+          ))}
+        </div>
 
         {filteredProducts.length === 0 && (
           <div className="text-center py-20">

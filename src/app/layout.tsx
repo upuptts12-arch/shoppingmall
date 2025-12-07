@@ -3,8 +3,9 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 
 import { WishlistProvider } from './context/WishlistContext'
-import { AuthProvider } from './context/AuthContext' // 추가
+import { AuthProvider } from './context/AuthContext'
 import WishlistSidebar from './components/WishlistSidebar'
+import Navbar from './components/Navbar' // 추가됨
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -33,9 +34,11 @@ export default function RootLayout({
       >
         <AuthProvider>
           <WishlistProvider>
-            {/* 하트 아이콘 클릭 시 나오는 사이드바 */}
+            {/* 찜 사이드바 */}
             <WishlistSidebar />
-
+            {/* 여기에서 모든 페이지 위에 Navbar 표시 */}
+            <Navbar /> {/* 추가 부분 */}
+            {/* 각 페이지 내용 */}
             {children}
           </WishlistProvider>
         </AuthProvider>

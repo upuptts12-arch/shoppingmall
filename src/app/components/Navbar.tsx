@@ -1,9 +1,25 @@
 'use client'
 
-import { ShoppingCart, Search, Heart, ShoppingBag } from 'lucide-react'
+import {
+  ShoppingCart,
+  Search,
+  Heart,
+  ShoppingBag,
+  User as UserIcon,
+} from 'lucide-react'
+
 import { useAuth } from '@/app/context/AuthContext'
 import { useRouter } from 'next/navigation'
 import { useWishlist } from '@/app/context/WishlistContext'
+
+interface NavbarProps {
+  activeCategory: string
+  setActiveCategory: (category: string) => void
+  searchQuery: string
+  setSearchQuery: (query: string) => void
+  cartCount: number
+  setIsCartOpen: (isOpen: boolean) => void
+}
 
 export default function Navbar({
   activeCategory,
@@ -12,7 +28,7 @@ export default function Navbar({
   setSearchQuery,
   cartCount,
   setIsCartOpen,
-}: any) {
+}: NavbarProps) {
   const { isLoggedIn, user, logout } = useAuth()
   const router = useRouter()
   const { wishlist, openWishlist } = useWishlist()
@@ -21,9 +37,10 @@ export default function Navbar({
     <nav className="sticky top-0 z-40 w-full bg-white/80 backdrop-blur-md border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
+          {/* 로고 */}
           <div
             className="flex items-center gap-2 cursor-pointer"
-            onClick={() => window.location.reload()}
+            onClick={() => router.push('/')}
           >
             <ShoppingBag className="h-8 w-8 text-indigo-600" />
             <span className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
@@ -31,22 +48,21 @@ export default function Navbar({
             </span>
           </div>
 
-          <div className="hidden md:flex items-center space-x-8">
-            {/* 카테고리 버튼들 */}
+          {/* 검색창 */}
+          <div className="relative hidden md:block">
+            <input
+              type="text"
+              placeholder="상품 검색..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10 pr-4 py-2 bg-gray-100 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 w-48 transition-all focus:w-64"
+            />
+            <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
           </div>
 
+          {/* 아이콘 영역 */}
           <div className="flex items-center gap-4">
-            <div className="relative hidden sm:block">
-              <input
-                type="text"
-                placeholder="상품 검색..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 pr-4 py-2 bg-gray-100 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 w-48 transition-all focus:w-64"
-              />
-              <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
-            </div>
-
+            {/* 찜 */}
             <button
               className="relative p-2 hover:bg-gray-100 rounded-full transition-colors"
               onClick={() =>
@@ -61,6 +77,7 @@ export default function Navbar({
               )}
             </button>
 
+            {/* 장바구니 */}
             <button
               className="relative p-2 hover:bg-gray-100 rounded-full transition-colors"
               onClick={() => setIsCartOpen(true)}
@@ -73,16 +90,45 @@ export default function Navbar({
               )}
             </button>
 
+            {/* 로그인 / 로그아웃 & 마이페이지 */}
             {isLoggedIn ? (
-              <div className="flex items-center gap-2">
-                <span className="text-gray-700 font-medium">{user?.name}</span>
-                <button
-                  onClick={logout}
-                  className="bg-red-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-600 transition"
-                >
-                  로그아웃
-                </button>
-              </div>
+              <>
+                {/* 데스크탑 */}
+                <div className="hidden md:flex items-center gap-2">
+                  <span className="text-gray-700 font-medium">
+                    {user?.name}
+                  </span>
+                  <button
+                    onClick={() => router.push('/mypage')}
+                    className="bg-indigo-600 text-white px-3 py-1 rounded-lg text-sm hover:bg-indigo-700 transition"
+                  >
+                    마이페이지
+                  </button>
+                  <button
+                    onClick={logout}
+                    className="bg-red-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-600 transition"
+                  >
+                    로그아웃
+                  </button>
+                </div>
+
+                {/* 모바일 */}
+                <div className="flex md:hidden items-center gap-2">
+                  <button
+                    onClick={() => router.push('/mypage')}
+                    className="p-2 rounded-full border border-gray-300 hover:bg-gray-100 flex items-center justify-center"
+                    aria-label="마이페이지"
+                  >
+                    <UserIcon className="h-4 w-4" />
+                  </button>
+                  <button
+                    onClick={logout}
+                    className="bg-red-500 text-white px-3 py-1 rounded-lg text-xs hover:bg-red-600 transition"
+                  >
+                    로그아웃
+                  </button>
+                </div>
+              </>
             ) : (
               <button
                 onClick={() => router.push('/login')}
