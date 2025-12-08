@@ -1,34 +1,35 @@
-'use client'
+'use client';
 
-import { useWishlist } from '../context/WishlistContext'
-import { X, Trash2, ShoppingCart } from 'lucide-react'
-import { useEffect } from 'react'
+import { useWishlist } from '../context/WishlistContext';
+import { X, Trash2, ShoppingCart } from 'lucide-react';
+import { useEffect } from 'react';
+import Link from 'next/link'; // [추가됨] 페이지 이동 기능
 
 export default function WishlistSidebar() {
   const { wishlist, isWishlistOpen, closeWishlist, removeFromWishlist } =
-    useWishlist()
+    useWishlist();
 
   // 사이드바 열리면 뒷배경 스크롤 막기
   useEffect(() => {
     if (isWishlistOpen) {
-      document.body.style.overflow = 'hidden'
+      document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = 'unset'
+      document.body.style.overflow = 'unset';
     }
-  }, [isWishlistOpen])
+  }, [isWishlistOpen]);
 
   // 가격 포맷
   const formatPrice = (price: number | string) =>
     new Intl.NumberFormat('ko-KR', {
       style: 'currency',
       currency: 'KRW',
-    }).format(Number(price))
+    }).format(Number(price));
 
   // 닫혀있으면 아예 안 보여줌
-  if (!isWishlistOpen) return null
+  if (!isWishlistOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-999 flex justify-end">
+    <div className="fixed inset-0 z-50 flex justify-end">
       {/* 검은 배경 (클릭 시 닫힘) */}
       <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity"
@@ -77,31 +78,44 @@ export default function WishlistSidebar() {
                 key={item.id}
                 className="flex gap-4 p-3 border border-gray-100 rounded-xl hover:border-indigo-100 transition-colors bg-white shadow-sm"
               >
-                {/* 이미지 */}
-                <div className="w-24 h-24 bg-gray-100 rounded-lg overflow-hidden shrink-0">
+                {/* [수정됨] 이미지 클릭 시 상세 페이지 이동 */}
+                <Link
+                  href={`/product/${item.id}`}
+                  onClick={closeWishlist}
+                  className="w-24 h-24 bg-gray-100 rounded-lg overflow-hidden shrink-0 cursor-pointer"
+                >
                   <img
                     src={item.image}
                     alt={item.name}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
                   />
-                </div>
+                </Link>
 
                 {/* 정보 */}
                 <div className="flex-1 flex flex-col justify-between py-1">
                   <div>
                     <p className="text-xs text-indigo-600 font-semibold mb-1">
-                      {item.category}
+                      {item.category || '카테고리'}
                     </p>
-                    <h3 className="text-sm font-bold text-gray-900 line-clamp-2">
-                      {item.name}
-                    </h3>
+
+                    {/* [수정됨] 제목 클릭 시 상세 페이지 이동 */}
+                    <Link href={`/product/${item.id}`} onClick={closeWishlist}>
+                      <h3 className="text-sm font-bold text-gray-900 line-clamp-2 hover:text-indigo-600 cursor-pointer transition-colors">
+                        {item.name}
+                      </h3>
+                    </Link>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="font-bold text-lg text-gray-900">
                       {formatPrice(item.price)}
                     </span>
+
+                    {/* 삭제 버튼은 링크 기능 없이 삭제만 수행 */}
                     <button
-                      onClick={() => removeFromWishlist(item.id)}
+                      onClick={(e) => {
+                        e.stopPropagation(); // 이벤트 전파 방지
+                        removeFromWishlist(item.id);
+                      }}
                       className="text-gray-400 hover:text-red-500 p-1.5 hover:bg-red-50 rounded-md transition-all"
                       title="삭제"
                     >
@@ -115,5 +129,5 @@ export default function WishlistSidebar() {
         </div>
       </div>
     </div>
-  )
+  );
 }
