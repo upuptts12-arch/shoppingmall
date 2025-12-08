@@ -13,16 +13,11 @@ import { useRouter } from 'next/navigation'
 import { useWishlist } from '@/app/context/WishlistContext'
 import { useState } from 'react'
 
-// 🔥 1. props 인터페이스 삭제
-// interface NavbarProps { ... }  <- 지우기
-
-// 🔥 2. 함수에서 props 받지 않게 변경
 export default function Navbar() {
   const { isLoggedIn, user, logout } = useAuth()
   const router = useRouter()
   const { wishlist, openWishlist } = useWishlist()
 
-  // 🔥 3. 원래 props로 받던 값들, 이제 내부 상태로 관리
   const [searchQuery, setSearchQuery] = useState('')
   const [cartCount, setCartCount] = useState(0)
   const [isCartOpen, setIsCartOpen] = useState(false)

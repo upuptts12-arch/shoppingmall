@@ -4,7 +4,6 @@ import { useWishlist } from '../context/WishlistContext'
 import { X, Trash2, ShoppingCart } from 'lucide-react'
 import { useEffect } from 'react'
 
-// [핵심!] 반드시 'export default'가 있어야 layout.tsx에서 불러올 수 있습니다.
 export default function WishlistSidebar() {
   const { wishlist, isWishlistOpen, closeWishlist, removeFromWishlist } =
     useWishlist()
