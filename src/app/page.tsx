@@ -4,6 +4,7 @@ import Link from 'next/link'
 import React, { useState } from 'react'
 import ProductCard from '@/app/components/ProductCard'
 import CartSidebar from '@/app/components/CartSidebar'
+import Navbar from '@/app/components/Navbar'
 import { SAMPLE_PRODUCTS, CATEGORIES } from '@/app/data/products'
 
 export default function Home() {
@@ -95,7 +96,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* 상품 리스트 */}
+        {/* 상품 카드 */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredProducts.map((product) => (
             <Link href={`/product/${product.id}`} key={product.id}>

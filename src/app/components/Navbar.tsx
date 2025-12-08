@@ -11,27 +11,21 @@ import {
 import { useAuth } from '@/app/context/AuthContext'
 import { useRouter } from 'next/navigation'
 import { useWishlist } from '@/app/context/WishlistContext'
+import { useState } from 'react'
 
-interface NavbarProps {
-  activeCategory: string
-  setActiveCategory: (category: string) => void
-  searchQuery: string
-  setSearchQuery: (query: string) => void
-  cartCount: number
-  setIsCartOpen: (isOpen: boolean) => void
-}
+// 🔥 1. props 인터페이스 삭제
+// interface NavbarProps { ... }  <- 지우기
 
-export default function Navbar({
-  activeCategory,
-  setActiveCategory,
-  searchQuery,
-  setSearchQuery,
-  cartCount,
-  setIsCartOpen,
-}: NavbarProps) {
+// 🔥 2. 함수에서 props 받지 않게 변경
+export default function Navbar() {
   const { isLoggedIn, user, logout } = useAuth()
   const router = useRouter()
   const { wishlist, openWishlist } = useWishlist()
+
+  // 🔥 3. 원래 props로 받던 값들, 이제 내부 상태로 관리
+  const [searchQuery, setSearchQuery] = useState('')
+  const [cartCount, setCartCount] = useState(0)
+  const [isCartOpen, setIsCartOpen] = useState(false)
 
   return (
     <nav className="sticky top-0 z-40 w-full bg-white/80 backdrop-blur-md border-b border-gray-200">
@@ -43,7 +37,7 @@ export default function Navbar({
             onClick={() => router.push('/')}
           >
             <ShoppingBag className="h-8 w-8 text-indigo-600" />
-            <span className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+            <span className="text-xl font-bold bg-linear-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
               TEAM_MALL
             </span>
           </div>
@@ -95,9 +89,7 @@ export default function Navbar({
               <>
                 {/* 데스크탑 */}
                 <div className="hidden md:flex items-center gap-2">
-                  <span className="text-gray-700 font-medium">
-                    {user?.name}
-                  </span>
+                  <span className="text-gray-700 font-medium">{user}</span>
                   <button
                     onClick={() => router.push('/mypage')}
                     className="bg-indigo-600 text-white px-3 py-1 rounded-lg text-sm hover:bg-indigo-700 transition"

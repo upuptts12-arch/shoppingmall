@@ -29,7 +29,7 @@ export default function WishlistSidebar() {
   if (!isWishlistOpen) return null
 
   return (
-    <div className="fixed inset-0 z-[999] flex justify-end">
+    <div className="fixed inset-0 z-999 flex justify-end">
       {/* 검은 배경 (클릭 시 닫힘) */}
       <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity"
@@ -79,7 +79,7 @@ export default function WishlistSidebar() {
                 className="flex gap-4 p-3 border border-gray-100 rounded-xl hover:border-indigo-100 transition-colors bg-white shadow-sm"
               >
                 {/* 이미지 */}
-                <div className="w-24 h-24 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+                <div className="w-24 h-24 bg-gray-100 rounded-lg overflow-hidden shrink-0">
                   <img
                     src={item.image}
                     alt={item.name}
