@@ -13,23 +13,31 @@ export default function LoginPage() {
   const [message, setMessage] = useState('')
 
   const handleLogin = async () => {
+    setMessage('')
+
     try {
-      const res = await fetch('http://localhost:5000/api/auth/login', {
+      const res = await fetch('/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ idOrEmail, password }),
       })
 
       const data = await res.json()
+
       if (res.ok) {
+        // 백엔드에서 내려준 token, user 정보 저장
         localStorage.setItem('token', data.token)
-        localStorage.setItem('name', data.name)
-        login(data.name)
+        localStorage.setItem('name', data.user.name)
+        localStorage.setItem('email', data.user.email)
+        localStorage.setItem('userId', data.user.userId)
+
+        login(data.user.name)
         router.push('/')
       } else {
-        setMessage(data.message || '로그인 실패')
+        setMessage(data.error || '로그인 실패')
       }
     } catch (err) {
+      console.error(err)
       setMessage('서버 오류')
     }
   }
