@@ -53,6 +53,8 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-50 font-sans text-gray-800">
+      {/* <Navbar /> */}
+
       {/* 메인 컨텐츠 */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* 프로모션 배너 */}
@@ -77,17 +79,17 @@ export default function Home() {
           </div>
         </div>
 
-        {/* 모바일 카테고리 버튼 */}
-        <div className="md:hidden mb-6 overflow-x-auto pb-2 scrollbar-hide">
-          <div className="flex space-x-2">
+        {/* -------------------- 카테고리 목록 영역 (수정된 부분) -------------------- */}
+        <div className="mb-6 overflow-x-auto pb-2 scrollbar-hide">
+          <div className="flex space-x-3">
             {CATEGORIES.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`px-4 py-2 rounded-full text-sm whitespace-nowrap ${
+                className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
                   activeCategory === cat
-                    ? 'bg-indigo-600 text-white'
-                    : 'bg-white text-gray-600 border border-gray-200'
+                    ? 'bg-indigo-600 text-white shadow-md'
+                    : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-100'
                 }`}
               >
                 {cat}
@@ -95,6 +97,7 @@ export default function Home() {
             ))}
           </div>
         </div>
+        {/* -------------------------------------------------------------------------- */}
 
         {/* 상품 카드 */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
