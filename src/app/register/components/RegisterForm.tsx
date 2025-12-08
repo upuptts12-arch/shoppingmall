@@ -74,7 +74,7 @@ export default function RegisterForm({ goBack }: RegisterFormProps) {
     }
     try {
       const res = await fetch(
-        `http://localhost:5000/api/auth/check-id?userId=${encodeURIComponent(
+        `http://localhost:3000/api/auth/check-id?userId=${encodeURIComponent(
           userId
         )}`
       )
@@ -106,7 +106,7 @@ export default function RegisterForm({ goBack }: RegisterFormProps) {
     }
 
     try {
-      const res = await fetch('http://localhost:5000/api/auth/register', {
+      const res = await fetch('http://localhost:3000/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

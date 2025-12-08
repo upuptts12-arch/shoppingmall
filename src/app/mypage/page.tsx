@@ -25,26 +25,34 @@ interface UserProfile {
 }
 
 export default function MyPage() {
-  const { isLoggedIn, user, logout } = useAuth()
   const router = useRouter()
+  const { isLoggedIn, user, logout } = useAuth()
 
   const [profile, setProfile] = useState<UserProfile | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [editing, setEditing] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [editForm, setEditForm] = useState<UserProfile | null>(null)
+  const [saveMessage, setSaveMessage] = useState('')
 
-  // 로그인 안 되어 있으면 로그인 페이지로 보냄
+  // 로그인 안 되어 있으면 로그인 페이지로 이동
   useEffect(() => {
     if (!isLoggedIn) {
       router.replace('/login')
     }
   }, [isLoggedIn, router])
 
-  // 프로필 정보 가져오기 (JWT 토큰 사용)
+  // 프로필 정보 가져오기
   useEffect(() => {
     if (!isLoggedIn) return
 
     const fetchProfile = async () => {
       try {
+        setLoading(true)
+        setError('')
+        setSaveMessage('')
+
         const token = localStorage.getItem('token')
 
         if (!token) {
@@ -53,7 +61,7 @@ export default function MyPage() {
           return
         }
 
-        const res = await fetch('http://localhost:5000/api/auth/profile', {
+        const res = await fetch('/api/auth/profile', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -61,15 +69,17 @@ export default function MyPage() {
           },
         })
 
+        const data = await res.json()
+
         if (!res.ok) {
-          setError('회원 정보를 불러오지 못했습니다.')
+          setError(data.error || '회원 정보를 불러오지 못했습니다.')
           setLoading(false)
           return
         }
 
-        const data = await res.json()
-        setProfile(data)
+        setProfile(data as UserProfile)
       } catch (e) {
+        console.error(e)
         setError('서버 통신 중 오류가 발생했습니다.')
       } finally {
         setLoading(false)
@@ -78,6 +88,76 @@ export default function MyPage() {
 
     fetchProfile()
   }, [isLoggedIn])
+
+  const startEdit = () => {
+    if (!profile) return
+    setEditForm({ ...profile })
+    setEditing(true)
+    setSaveMessage('')
+  }
+
+  const cancelEdit = () => {
+    setEditing(false)
+    setEditForm(null)
+    setSaveMessage('')
+  }
+
+  const handleChange = (field: keyof UserProfile, value: string) => {
+    if (!editForm) return
+    setEditForm({ ...editForm, [field]: value })
+  }
+
+  const handleSave = async () => {
+    if (!editForm) return
+    try {
+      setSaving(true)
+      setSaveMessage('')
+      setError('')
+
+      const token = localStorage.getItem('token')
+
+      if (!token) {
+        setError('로그인 정보가 없습니다. 다시 로그인해 주세요.')
+        setSaving(false)
+        return
+      }
+
+      const res = await fetch('/api/auth/profile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          name: editForm.name,
+          phone: editForm.phone,
+          zipcode: editForm.zipcode,
+          address1: editForm.address1,
+          address2: editForm.address2,
+          bankHolder: editForm.bankHolder,
+          bankAccount: editForm.bankAccount,
+        }),
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        setError(data.error || '회원 정보 수정에 실패했습니다.')
+        setSaving(false)
+        return
+      }
+
+      setProfile(data.profile as UserProfile)
+      setEditing(false)
+      setEditForm(null)
+      setSaveMessage('회원 정보가 수정되었습니다.')
+    } catch (e) {
+      console.error(e)
+      setError('서버 통신 중 오류가 발생했습니다.')
+    } finally {
+      setSaving(false)
+    }
+  }
 
   if (!isLoggedIn) {
     return (
@@ -119,6 +199,8 @@ export default function MyPage() {
 
   const displayName = profile.name || user || profile.userId
 
+  const current = editing && editForm ? editForm : profile
+
   return (
     <main className="min-h-[calc(100vh-4rem)] bg-gray-50 py-10">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -127,7 +209,7 @@ export default function MyPage() {
           <div>
             <h1 className="text-2xl font-bold text-gray-900">마이페이지</h1>
             <p className="text-sm text-gray-500 mt-1">
-              {displayName}님의 회원 정보를 확인할 수 있습니다.
+              {displayName}님의 회원 정보를 확인하고 수정할 수 있습니다.
             </p>
           </div>
 
@@ -140,6 +222,10 @@ export default function MyPage() {
           </button>
         </div>
 
+        {saveMessage && (
+          <div className="mb-4 text-sm text-green-600">{saveMessage}</div>
+        )}
+
         <div className="grid gap-6 md:grid-cols-[2fr,3fr]">
           {/* 왼쪽: 프로필 카드 */}
           <section className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col items-center text-center">
@@ -147,7 +233,7 @@ export default function MyPage() {
               <UserIcon className="h-10 w-10 text-indigo-600" />
             </div>
             <h2 className="text-lg font-semibold text-gray-900">
-              {displayName}
+              {current.name || profile.userId}
             </h2>
             <p className="text-sm text-gray-500 mt-1">
               TEAM_MALL 회원 ({profile.userId})
@@ -162,21 +248,21 @@ export default function MyPage() {
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="h-4 w-4 text-gray-400" />
-                <span>휴대전화 : {profile.phone || '미등록'}</span>
+                <span>휴대전화 : {current.phone || '미등록'}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Home className="h-4 w-4 text-gray-400" />
                 <span>
                   주소 :{' '}
-                  {profile.zipcode
-                    ? `(${profile.zipcode}) ${profile.address1} ${profile.address2}`
+                  {current.zipcode
+                    ? `(${current.zipcode}) ${current.address1} ${current.address2}`
                     : '미등록'}
                 </span>
               </div>
             </div>
           </section>
 
-          {/* 오른쪽: 상세 정보 */}
+          {/* 오른쪽: 상세 정보 + 수정 폼 */}
           <section className="space-y-6">
             {/* 기본 정보 */}
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
@@ -190,7 +276,18 @@ export default function MyPage() {
                 </div>
                 <div className="flex justify-between">
                   <dt className="text-gray-500">이름</dt>
-                  <dd className="font-medium">{profile.name}</dd>
+                  <dd className="font-medium">
+                    {editing && editForm ? (
+                      <input
+                        type="text"
+                        className="border border-gray-300 rounded px-2 py-1 text-sm"
+                        value={editForm.name}
+                        onChange={(e) => handleChange('name', e.target.value)}
+                      />
+                    ) : (
+                      profile.name
+                    )}
+                  </dd>
                 </div>
                 <div className="flex justify-between">
                   <dt className="text-gray-500">이메일</dt>
@@ -205,20 +302,55 @@ export default function MyPage() {
                 주소
               </h3>
               <dl className="space-y-3 text-sm text-gray-700">
-                <div className="flex justify-between">
+                <div className="flex justify-between gap-4">
                   <dt className="text-gray-500">우편번호</dt>
-                  <dd className="font-medium">{profile.zipcode || '미등록'}</dd>
-                </div>
-                <div className="flex justify-between">
-                  <dt className="text-gray-500">기본주소</dt>
                   <dd className="font-medium">
-                    {profile.address1 || '미등록'}
+                    {editing && editForm ? (
+                      <input
+                        type="text"
+                        className="border border-gray-300 rounded px-2 py-1 text-sm"
+                        value={editForm.zipcode}
+                        onChange={(e) =>
+                          handleChange('zipcode', e.target.value)
+                        }
+                      />
+                    ) : (
+                      current.zipcode || '미등록'
+                    )}
                   </dd>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between gap-4">
+                  <dt className="text-gray-500">기본주소</dt>
+                  <dd className="font-medium flex-1 text-right">
+                    {editing && editForm ? (
+                      <input
+                        type="text"
+                        className="border border-gray-300 rounded px-2 py-1 text-sm w-full"
+                        value={editForm.address1}
+                        onChange={(e) =>
+                          handleChange('address1', e.target.value)
+                        }
+                      />
+                    ) : (
+                      current.address1 || '미등록'
+                    )}
+                  </dd>
+                </div>
+                <div className="flex justify-between gap-4">
                   <dt className="text-gray-500">상세주소</dt>
-                  <dd className="font-medium">
-                    {profile.address2 || '미등록'}
+                  <dd className="font-medium flex-1 text-right">
+                    {editing && editForm ? (
+                      <input
+                        type="text"
+                        className="border border-gray-300 rounded px-2 py-1 text-sm w-full"
+                        value={editForm.address2}
+                        onChange={(e) =>
+                          handleChange('address2', e.target.value)
+                        }
+                      />
+                    ) : (
+                      current.address2 || '미등록'
+                    )}
                   </dd>
                 </div>
               </dl>
@@ -230,40 +362,92 @@ export default function MyPage() {
                 휴대전화 및 추가 정보
               </h3>
               <dl className="space-y-3 text-sm text-gray-700">
-                <div className="flex justify-between">
+                <div className="flex justify-between gap-4">
                   <dt className="text-gray-500">휴대전화 번호</dt>
-                  <dd className="font-medium">{profile.phone || '미등록'}</dd>
+                  <dd className="font-medium">
+                    {editing && editForm ? (
+                      <input
+                        type="text"
+                        className="border border-gray-300 rounded px-2 py-1 text-sm"
+                        value={editForm.phone}
+                        onChange={(e) => handleChange('phone', e.target.value)}
+                      />
+                    ) : (
+                      current.phone || '미등록'
+                    )}
+                  </dd>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between gap-4">
                   <dt className="text-gray-500 flex items-center gap-1">
                     <CreditCard className="h-4 w-4 text-gray-400" />
                     예금주
                   </dt>
                   <dd className="font-medium">
-                    {profile.bankHolder || '미등록'}
+                    {editing && editForm ? (
+                      <input
+                        type="text"
+                        className="border border-gray-300 rounded px-2 py-1 text-sm"
+                        value={editForm.bankHolder}
+                        onChange={(e) =>
+                          handleChange('bankHolder', e.target.value)
+                        }
+                      />
+                    ) : (
+                      current.bankHolder || '미등록'
+                    )}
                   </dd>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between gap-4">
                   <dt className="text-gray-500 flex items-center gap-1">
                     <CreditCard className="h-4 w-4 text-gray-400" />
                     계좌번호
                   </dt>
                   <dd className="font-medium">
-                    {profile.bankAccount || '미등록'}
+                    {editing && editForm ? (
+                      <input
+                        type="text"
+                        className="border border-gray-300 rounded px-2 py-1 text-sm"
+                        value={editForm.bankAccount}
+                        onChange={(e) =>
+                          handleChange('bankAccount', e.target.value)
+                        }
+                      />
+                    ) : (
+                      current.bankAccount || '미등록'
+                    )}
                   </dd>
                 </div>
               </dl>
 
-              <div className="mt-5 flex flex-wrap gap-3">
-                <button
-                  type="button"
-                  className="px-4 py-2 rounded-lg text-xs sm:text-sm font-medium border border-gray-300 hover:bg-gray-50 transition"
-                  onClick={() =>
-                    alert('회원 정보 수정 기능은 추후 구현 예정입니다.')
-                  }
-                >
-                  회원 정보 수정
-                </button>
+              <div className="mt-5 flex flex-wrap gap-3 justify-end">
+                {editing ? (
+                  <>
+                    <button
+                      type="button"
+                      className="px-4 py-2 rounded-lg text-xs sm:text-sm font-medium border border-gray-300 hover:bg-gray-50 transition"
+                      onClick={cancelEdit}
+                      disabled={saving}
+                    >
+                      취소
+                    </button>
+                    <button
+                      type="button"
+                      className="px-4 py-2 rounded-lg text-xs sm:text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-700 transition disabled:opacity-60"
+                      onClick={handleSave}
+                      disabled={saving}
+                    >
+                      {saving ? '저장 중...' : '변경 사항 저장'}
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    type="button"
+                    className="px-4 py-2 rounded-lg text-xs sm:text-sm font-medium border border-gray-300 hover:bg-gray-50 transition"
+                    onClick={startEdit}
+                  >
+                    회원 정보 수정
+                  </button>
+                )}
               </div>
             </div>
           </section>
