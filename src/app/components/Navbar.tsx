@@ -85,12 +85,15 @@ export default function Navbar() {
                 {/* 데스크탑 */}
                 <div className="hidden md:flex items-center gap-2">
                   <span className="text-gray-700 font-medium">{user}</span>
+
                   <button
                     onClick={() => router.push('/mypage')}
-                    className="bg-indigo-600 text-white px-3 py-1 rounded-lg text-sm hover:bg-indigo-700 transition"
+                    className="p-2 rounded-full border border-gray-300 hover:bg-gray-100 flex items-center justify-center"
+                    aria-label="마이페이지"
                   >
-                    마이페이지
+                    <UserIcon className="h-4 w-4" />
                   </button>
+
                   <button
                     onClick={logout}
                     className="bg-red-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-600 transition"
