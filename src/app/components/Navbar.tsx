@@ -1,13 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import {
-  ShoppingCart,
-  Search,
-  Heart,
-  User as UserIcon,
-  ShoppingBag,
-} from 'lucide-react'
+import { ShoppingCart, Search, Heart, User as UserIcon } from 'lucide-react'
 
 import { useAuth } from '@/app/context/AuthContext'
 import { useRouter } from 'next/navigation'
@@ -32,10 +26,14 @@ export default function Navbar() {
             className="flex items-center gap-2 cursor-pointer h-16 pl-2"
             onClick={() => router.push('/')}
           >
-            <ShoppingBag className="h-8 w-8 text-indigo-600" />
-            <span className="text-xl font-bold bg-linear-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-              TEAM_MALL
-            </span>
+            <Image
+              src="/softedge-logo.png"
+              alt="Soft Edge Logo"
+              width={58}
+              height={58}
+              priority
+              className="object-contain drop-shadow-md hover:brightness-125 transition"
+            />
           </div>
 
           {/* 검색창 */}
