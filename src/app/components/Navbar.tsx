@@ -5,7 +5,7 @@ import { ShoppingCart, Search, Heart, User as UserIcon } from 'lucide-react'
 import { useAuth } from '@/app/context/AuthContext'
 import { useWishlist } from '@/app/context/WishlistContext'
 import { useCart } from '@/app/context/CartContext'
-import CartSidebar from '@/app/components/CartSidebar' // 👉 경로 확인 필요!
+import CartSidebar from '@/app/components/CartSidebar'
 
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -147,7 +147,7 @@ export default function Navbar() {
       {/* 🛒 ▼ 장바구니 사이드바 렌더링 ▼ */}
       <CartSidebar
         isOpen={isCartOpen}
-        setIsOpen={closeCart}
+        setIsOpen={toggleCart} // 🔥 수정 완료: close → toggle
         cart={cart}
         updateQuantity={updateQuantity}
         removeFromCart={removeFromCart}

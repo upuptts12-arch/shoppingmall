@@ -2,9 +2,11 @@
 
 import { ShoppingCart, Star, Heart } from 'lucide-react'
 import { useWishlist } from '../context/WishlistContext'
+import { useCart } from '../context/CartContext' // 👈 장바구니 Context 연결!
 
-export default function ProductCard({ product, addToCart }: any) {
+export default function ProductCard({ product }: any) {
   const { toggleWishlist, isLiked } = useWishlist()
+  const { addToCart } = useCart() // 👈 여기에서 가져옴!
   const isHearted = isLiked(product.id)
 
   const formatPrice = (price: number) =>
@@ -61,7 +63,7 @@ export default function ProductCard({ product, addToCart }: any) {
           onClick={(e) => {
             e.preventDefault()
             e.stopPropagation()
-            addToCart(product)
+            addToCart(product) // 👈 props 없이 직접 호출!
           }}
           className="mt-auto w-full bg-gray-900 text-white py-3 rounded-lg font-medium hover:bg-indigo-600 transition-colors flex items-center justify-center gap-2 active:scale-95"
         >

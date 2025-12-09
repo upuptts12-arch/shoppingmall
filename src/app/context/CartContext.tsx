@@ -14,7 +14,7 @@ interface CartItem {
 interface CartContextType {
   cart: CartItem[]
   cartCount: number
-  addToCart: (product: CartItem) => void
+  addToCart: (product: Partial<CartItem>) => void
   updateQuantity: (id: string, amount: number) => void
   removeFromCart: (id: string) => void
   toggleCart: () => void
@@ -28,9 +28,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>([])
   const [isCartOpen, setIsCartOpen] = useState(false)
 
-  const addToCart = (product: CartItem) => {
+  const addToCart = (product: Partial<CartItem>) => {
     setCart((prev) => {
       const existing = prev.find((item) => item.id === product.id)
+
       if (existing) {
         return prev.map((item) =>
           item.id === product.id
@@ -38,7 +39,18 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
             : item
         )
       }
-      return [...prev, { ...product, quantity: 1 }]
+
+      return [
+        ...prev,
+        {
+          id: product.id!,
+          name: product.name!,
+          price: product.price!,
+          image: product.image ?? '/default.png',
+          category: product.category ?? '기타',
+          quantity: 1,
+        },
+      ]
     })
 
     setIsCartOpen(true)
