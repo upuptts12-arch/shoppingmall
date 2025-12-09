@@ -52,7 +52,7 @@ export default function CartSidebar({
                 <p>장바구니가 비어있습니다.</p>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="text-indigo-600 font-medium hover:underline"
+                  className="text-gray-600 font-medium hover:underline"
                 >
                   쇼핑 계속하기
                 </button>
@@ -119,7 +119,7 @@ export default function CartSidebar({
             <div className="border-t border-gray-200 px-6 py-6 bg-gray-50">
               <div className="flex justify-between text-base font-bold text-gray-900 mb-4">
                 <p>총 결제 금액</p>
-                <p className="text-xl text-indigo-600">
+                <p className="text-xl text-gray-600">
                   {formatPrice(totalAmount)}
                 </p>
               </div>
@@ -127,7 +127,7 @@ export default function CartSidebar({
                 배송비 및 세금은 결제 단계에서 계산됩니다.
               </p>
               <button
-                className="w-full flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-4 text-base font-medium text-white shadow-sm hover:bg-indigo-700 active:scale-[0.98] transition-all"
+                className="w-full flex items-center justify-center rounded-md border border-transparent bg-gray-900 px-6 py-4 text-base font-medium text-white shadow-sm hover:bg-gray-700 active:scale-[0.98] transition-all"
                 onClick={() =>
                   alert('팀 프로젝트 과제 제출용 프로토타입입니다!')
                 }

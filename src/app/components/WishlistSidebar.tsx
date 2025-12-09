@@ -1,32 +1,32 @@
-'use client';
+'use client'
 
-import { useWishlist } from '../context/WishlistContext';
-import { X, Trash2, ShoppingCart } from 'lucide-react';
-import { useEffect } from 'react';
-import Link from 'next/link'; // [추가됨] 페이지 이동 기능
+import { useWishlist } from '../context/WishlistContext'
+import { X, Trash2, ShoppingCart } from 'lucide-react'
+import { useEffect } from 'react'
+import Link from 'next/link' // [추가됨] 페이지 이동 기능
 
 export default function WishlistSidebar() {
   const { wishlist, isWishlistOpen, closeWishlist, removeFromWishlist } =
-    useWishlist();
+    useWishlist()
 
   // 사이드바 열리면 뒷배경 스크롤 막기
   useEffect(() => {
     if (isWishlistOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden'
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = 'unset'
     }
-  }, [isWishlistOpen]);
+  }, [isWishlistOpen])
 
   // 가격 포맷
   const formatPrice = (price: number | string) =>
     new Intl.NumberFormat('ko-KR', {
       style: 'currency',
       currency: 'KRW',
-    }).format(Number(price));
+    }).format(Number(price))
 
   // 닫혀있으면 아예 안 보여줌
-  if (!isWishlistOpen) return null;
+  if (!isWishlistOpen) return null
 
   return (
     <div className="fixed inset-0 z-50 flex justify-end">
@@ -42,7 +42,7 @@ export default function WishlistSidebar() {
         <div className="p-5 border-b flex items-center justify-between bg-white">
           <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
             ❤️ 찜한 상품
-            <span className="text-indigo-600">({wishlist.length})</span>
+            <span className="text-gray-900">({wishlist.length})</span>
           </h2>
           <button
             onClick={closeWishlist}
@@ -67,7 +67,7 @@ export default function WishlistSidebar() {
               </div>
               <button
                 onClick={closeWishlist}
-                className="px-6 py-2.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-medium transition-colors"
+                className="px-6 py-2.5 bg-gray-400 text-white rounded-lg hover:bg-gary-400 font-medium transition-colors"
               >
                 쇼핑 계속하기
               </button>
@@ -94,13 +94,13 @@ export default function WishlistSidebar() {
                 {/* 정보 */}
                 <div className="flex-1 flex flex-col justify-between py-1">
                   <div>
-                    <p className="text-xs text-indigo-600 font-semibold mb-1">
+                    <p className="text-xs text-yellow-600 font-semibold mb-1">
                       {item.category || '카테고리'}
                     </p>
 
                     {/* [수정됨] 제목 클릭 시 상세 페이지 이동 */}
                     <Link href={`/product/${item.id}`} onClick={closeWishlist}>
-                      <h3 className="text-sm font-bold text-gray-900 line-clamp-2 hover:text-indigo-600 cursor-pointer transition-colors">
+                      <h3 className="text-sm font-bold text-gray-900 line-clamp-2 hover:text-gary-400 cursor-pointer transition-colors">
                         {item.name}
                       </h3>
                     </Link>
@@ -113,8 +113,8 @@ export default function WishlistSidebar() {
                     {/* 삭제 버튼은 링크 기능 없이 삭제만 수행 */}
                     <button
                       onClick={(e) => {
-                        e.stopPropagation(); // 이벤트 전파 방지
-                        removeFromWishlist(item.id);
+                        e.stopPropagation() // 이벤트 전파 방지
+                        removeFromWishlist(item.id)
                       }}
                       className="text-gray-400 hover:text-red-500 p-1.5 hover:bg-red-50 rounded-md transition-all"
                       title="삭제"
@@ -129,5 +129,5 @@ export default function WishlistSidebar() {
         </div>
       </div>
     </div>
-  );
+  )
 }

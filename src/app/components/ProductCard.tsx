@@ -41,7 +41,7 @@ export default function ProductCard({ product }: any) {
 
       <div className="p-5 flex-1 flex flex-col">
         <div className="flex justify-between items-start mb-2">
-          <p className="text-sm text-indigo-600 font-medium">
+          <p className="text-sm text-yellow-500 font-medium">
             {product.category}
           </p>
           <div className="flex items-center text-yellow-400 text-sm">
@@ -65,7 +65,7 @@ export default function ProductCard({ product }: any) {
             e.stopPropagation()
             addToCart(product) // 👈 props 없이 직접 호출!
           }}
-          className="mt-auto w-full bg-gray-900 text-white py-3 rounded-lg font-medium hover:bg-indigo-600 transition-colors flex items-center justify-center gap-2 active:scale-95"
+          className="mt-auto w-full bg-gray-900 text-white py-3 rounded-lg font-medium hover:bg-gray-400 transition-colors flex items-center justify-center gap-2 active:scale-95"
         >
           <ShoppingCart className="h-5 w-5" />
           담기
