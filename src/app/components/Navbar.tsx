@@ -49,18 +49,6 @@ export default function Navbar() {
               />
             </div>
 
-            {/* 검색창 */}
-            <div className="relative hidden md:block">
-              <input
-                type="text"
-                placeholder="상품 검색..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 pr-4 py-2 bg-gray-100 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 w-48 transition-all focus:w-64"
-              />
-              <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
-            </div>
-
             {/* 아이콘 영역 */}
             <div className="flex items-center gap-4">
               {/* ❤ 찜 */}
@@ -134,7 +122,7 @@ export default function Navbar() {
               ) : (
                 <button
                   onClick={() => router.push('/login')}
-                  className="bg-indigo-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-indigo-700 transition"
+                  className="bg-gray-300 text-white px-4 py-2 rounded-lg font-semibold hover:bg-gray-400 transition"
                 >
                   로그인
                 </button>

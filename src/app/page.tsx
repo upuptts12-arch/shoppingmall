@@ -72,7 +72,7 @@ export default function Home() {
               onClick={() => setActiveCategory(cat)}
               className={`px-4 py-2 rounded-full text-sm font-medium ${
                 activeCategory === cat
-                  ? 'bg-indigo-600 text-white shadow'
+                  ? 'bg-gray-300 text-white shadow'
                   : 'bg-white text-gray-700 border hover:bg-gray-100'
               }`}
             >
