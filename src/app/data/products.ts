@@ -3,7 +3,7 @@ export const SAMPLE_PRODUCTS = [
   {
     id: 1,
     name: '베이직 오버핏 후드',
-    price: 45000,
+    price: 36000,
     category: 'Top',
     image: '/후드.png',
     rating: 4.8,
@@ -11,10 +11,10 @@ export const SAMPLE_PRODUCTS = [
   {
     id: 2,
     name: '와이드 데님 팬츠',
-    price: 52000,
+    price: 43000,
     category: 'Bottom',
     image: '/와이드.png',
-    rating: 4.5,
+    rating: 4.3,
   },
   {
     id: 3,
@@ -27,18 +27,18 @@ export const SAMPLE_PRODUCTS = [
   {
     id: 4,
     name: '레더 크로스백',
-    price: 89000,
+    price: 32000,
     category: 'Bag',
     image: '/레더.png',
-    rating: 4.9,
+    rating: 4.4,
   },
   {
     id: 5,
     name: '스트라이프 셔츠',
-    price: 39000,
+    price: 63000,
     category: 'Top',
     image: '/스트라이프.png',
-    rating: 4.3,
+    rating: 4.7,
   },
   {
     id: 6,
@@ -46,16 +46,16 @@ export const SAMPLE_PRODUCTS = [
     price: 48000,
     category: 'Bottom',
     image: '/카고.jpg',
-    rating: 4.6,
+    rating: 4.2,
   },
 
   {
     id: 7,
-    name: '스위트 핑크 후드 스웨터',
-    price: 48000,
+    name: '스위트 핑크 후드 스웨터 코트',
+    price: 129000,
     category: 'Top',
     image: '/pink.png',
-    rating: 4.6,
+    rating: 5.0,
   },
 
   {
@@ -64,7 +64,7 @@ export const SAMPLE_PRODUCTS = [
     price: 34000,
     category: 'Top',
     image: '/플라워.jpg',
-    rating: 4.6,
+    rating: 5.0,
   },
   {
     id: 9,
@@ -72,7 +72,7 @@ export const SAMPLE_PRODUCTS = [
     price: 20260,
     category: 'Bottom',
     image: '/사이드 핀턱.jpg',
-    rating: 4.6,
+    rating: 5.0,
   },
   {
     id: 10,
@@ -80,7 +80,7 @@ export const SAMPLE_PRODUCTS = [
     price: 32000,
     category: 'Bottom',
     image: '/트레이닝.jpg',
-    rating: 4.6,
+    rating: 4.8,
   },
   {
     id: 11,
@@ -88,7 +88,7 @@ export const SAMPLE_PRODUCTS = [
     price: 38000,
     category: 'Shoes',
     image: '/아디다스.jpg',
-    rating: 5.0,
+    rating: 4.5,
   },
   {
     id: 12,
@@ -96,7 +96,7 @@ export const SAMPLE_PRODUCTS = [
     price: 57000,
     category: 'Shoes',
     image: '/ugg.jpg',
-    rating: 4.7,
+    rating: 4.4,
   },
   {
     id: 13,
@@ -113,7 +113,7 @@ export const SAMPLE_PRODUCTS = [
     price: 52000,
     category: 'Bag',
     image: '/무센트.jpg',
-    rating: 4.9,
+    rating: 4.5,
   },
 ]
 
