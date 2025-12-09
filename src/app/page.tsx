@@ -4,7 +4,6 @@ import Link from 'next/link'
 import React, { useState } from 'react'
 import ProductCard from '@/app/components/ProductCard'
 import CartSidebar from '@/app/components/CartSidebar'
-import Navbar from '@/app/components/Navbar'
 import { SAMPLE_PRODUCTS, CATEGORIES } from '@/app/data/products'
 
 export default function Home() {
@@ -52,52 +51,35 @@ export default function Home() {
   })
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans text-gray-800">
-      {/* <Navbar /> */}
+    <div className="min-h-screen bg-white font-sans text-gray-800">
+      {/* ===== HERO ===== */}
+      <section className="relative w-full h-screen flex items-start justify-center bg-white pt-24">
+        <img
+          src="/hero.png"
+          alt="Soft Edge Hero"
+          className="w-[90%] md:w-[75%] max-w-[1200px] object-contain select-none pointer-events-none"
+          draggable={false}
+        />
+      </section>
 
-      {/* 메인 컨텐츠 */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* 프로모션 배너 */}
-        <div className="mb-12 rounded-2xl overflow-hidden relative h-64 bg-indigo-900 flex items-center">
-          <div className="absolute inset-0 opacity-40">
-            <img
-              src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&q=80&w=1200"
-              className="w-full h-full object-cover"
-              alt="Banner"
-            />
-          </div>
-          <div className="relative z-10 px-8 md:px-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              기말 과제 화이팅 세일
-            </h2>
-            <p className="text-indigo-200 text-lg mb-6">
-              놀랄 퀄리티, 여기서 시작하세요.
-            </p>
-            <button className="bg-white text-indigo-900 px-6 py-3 rounded-lg font-bold hover:bg-indigo-50 transition-colors shadow-lg">
-              지금 바로 구매하기
+      {/* ===== PRODUCTS SECTION ===== */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        {/* 카테고리 */}
+        <div className="mb-8 flex gap-3 flex-wrap justify-center">
+          {CATEGORIES.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              className={`px-4 py-2 rounded-full text-sm font-medium ${
+                activeCategory === cat
+                  ? 'bg-indigo-600 text-white shadow'
+                  : 'bg-white text-gray-700 border hover:bg-gray-100'
+              }`}
+            >
+              {cat}
             </button>
-          </div>
+          ))}
         </div>
-
-        {/* -------------------- 카테고리 목록 영역 (수정된 부분) -------------------- */}
-        <div className="mb-6 overflow-x-auto pb-2 scrollbar-hide">
-          <div className="flex space-x-3">
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
-                  activeCategory === cat
-                    ? 'bg-indigo-600 text-white shadow-md'
-                    : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-100'
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-        </div>
-        {/* -------------------------------------------------------------------------- */}
 
         {/* 상품 카드 */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -115,7 +97,6 @@ export default function Home() {
         )}
       </main>
 
-      {/* 장바구니 사이드바 */}
       <CartSidebar
         isOpen={isCartOpen}
         setIsOpen={setIsCartOpen}
