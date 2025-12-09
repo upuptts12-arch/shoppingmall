@@ -5,8 +5,7 @@ export const SAMPLE_PRODUCTS = [
     name: '베이직 오버핏 후드',
     price: 45000,
     category: 'Top',
-    image:
-      'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&q=80&w=500',
+    image: '/후드.png',
     rating: 4.8,
   },
   {
@@ -14,8 +13,7 @@ export const SAMPLE_PRODUCTS = [
     name: '와이드 데님 팬츠',
     price: 52000,
     category: 'Bottom',
-    image:
-      'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&q=80&w=500',
+    image: '/와이드.png',
     rating: 4.5,
   },
   {
@@ -23,8 +21,7 @@ export const SAMPLE_PRODUCTS = [
     name: '캔버스 스니커즈',
     price: 69000,
     category: 'Shoes',
-    image:
-      'https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&q=80&w=500',
+    image: '/컨버스.jpg',
     rating: 4.7,
   },
   {
@@ -32,8 +29,7 @@ export const SAMPLE_PRODUCTS = [
     name: '레더 크로스백',
     price: 89000,
     category: 'Bag',
-    image:
-      'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&q=80&w=500',
+    image: '/레더.png',
     rating: 4.9,
   },
   {
@@ -41,8 +37,7 @@ export const SAMPLE_PRODUCTS = [
     name: '스트라이프 셔츠',
     price: 39000,
     category: 'Top',
-    image:
-      'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&q=80&w=500',
+    image: '/스트라이프.png',
     rating: 4.3,
   },
   {
@@ -50,9 +45,75 @@ export const SAMPLE_PRODUCTS = [
     name: '카고 조거 팬츠',
     price: 48000,
     category: 'Bottom',
-    image:
-      'https://search.pstatic.net/common/?src=http%3A%2F%2Fshop1.phinf.naver.net%2F20220523_82%2F1653281855421tuFjk_JPEG%2F54417638859276994_1280782533.jpg&type=a340',
+    image: '/카고.jpg',
     rating: 4.6,
+  },
+
+  {
+    id: 7,
+    name: '스위트 핑크 후드 스웨터',
+    price: 48000,
+    category: 'Top',
+    image: '/pink.png',
+    rating: 4.6,
+  },
+
+  {
+    id: 8,
+    name: '미넌 오프숄더 플라워 빈티지 니트',
+    price: 34000,
+    category: 'Top',
+    image: '/플라워.jpg',
+    rating: 4.6,
+  },
+  {
+    id: 9,
+    name: '사이드 핀턱 와이드 팬츠',
+    price: 20260,
+    category: 'Bottom',
+    image: '/사이드 핀턱.jpg',
+    rating: 4.6,
+  },
+  {
+    id: 10,
+    name: '코듀로이 사이드 핀턱 트레이닝 팬츠',
+    price: 32000,
+    category: 'Bottom',
+    image: '/트레이닝.jpg',
+    rating: 4.6,
+  },
+  {
+    id: 11,
+    name: '아디다스 VL 코트 인도어 삼바',
+    price: 38000,
+    category: 'Shoes',
+    image: '/아디다스.jpg',
+    rating: 5.0,
+  },
+  {
+    id: 12,
+    name: 'UGG 양털부츠',
+    price: 57000,
+    category: 'Shoes',
+    image: '/ugg.jpg',
+    rating: 4.7,
+  },
+  {
+    id: 13,
+    name: '스웨이드 숄더백',
+    price: 12400,
+    category: 'Bag',
+    image: '/스웨이드.jpg',
+    rating: 4.9,
+  },
+
+  {
+    id: 14,
+    name: '무센트 시그니처 로고 자수 백팩',
+    price: 52000,
+    category: 'Bag',
+    image: '/무센트.jpg',
+    rating: 4.9,
   },
 ]
 
